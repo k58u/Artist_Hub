@@ -1,0 +1,79 @@
+{% extends 'web\auth_base.html' %}
+{% load static %}
+{% block title %}
+  Login
+{% endblock %}
+
+{% block styles %}
+  <style>
+    body {
+      background-color: #f8f9fa;
+      background-image: url('/static/images/login__.jpg');
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    
+    .login-container {
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      max-width: 400px;
+      width: 100%;
+    }
+    
+    .login-container h2 {
+      margin-bottom: 1.5rem;
+    }
+  </style>
+{% endblock %}
+
+{% block auth %}
+  <div class="login-container">
+    <div class="d-flex justify-content-center">
+      <img src="{% static 'images\logo.png' %}" height="100px" alt="" />
+    </div>
+    <h2 class="text-center header-pacifico-regular">Login</h2>
+
+    <!-- start message section -->
+    {% if messages %}
+      <!-- <div class="container-fluid"> -->
+      {% for message in messages %}
+        <div class="alert alert-dismissible fade show {% if message.tags == 'error' %}
+            alert-danger
+          {% elif message.tags == 'warning' %}
+            alert-warning
+          {% elif message.tags == 'success' %}
+            alert-success
+          {% elif message.tags == 'info' %}
+            alert-info
+          {% endif %}"
+          role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+      <!-- </div> -->
+    {% endif %}
+    <!-- end message section -->
+    <form action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="artist_id" class="form-label">Artist ID</label>
+        <input type="text" class="form-control" id="artist_id" name="artist_id" placeholder="AH000..." required />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required />
+      </div>
+      <button type="submit" class="btn btn-dark w-100">Login</button>
+      <div class="d-flex justify-content-between mt-2">
+        <a href="{% url 'forgot_password_view' %}">Forgot password?</a>
+        <a href="{% url 'register_view' %}">New user?</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

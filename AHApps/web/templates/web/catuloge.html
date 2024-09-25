@@ -1,0 +1,63 @@
+
+{% extends 'web\web_base.html' %}
+{% load static %}
+{% block title %}
+Catalogue
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block web %}
+
+<div class="d-flex justify-content-end mt-3">
+
+    <!-- add catalogue trigger modal -->
+    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addCatalogue">
+        Add Catalogue
+    </button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addCatalogue" tabindex="-1" aria-labelledby="addCatalogueLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCatalogueLabel">Add new catalogue</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Catalogue image</label>
+                        <input type="file" class="form-control" id="image"
+                            placeholder="catalogue image...">
+                    </div>
+                    <div class="mb-3">
+                        <label for="catalogue_category" class="form-label">Category</label>
+                        <select name="" id="" class="form-select" multiple>
+                            <option value="" selected disabled>Choose catalogue category</option>
+                            <option value="">Shape</option>
+                            <option value="">Color</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="title"
+                            placeholder="catalogue title...">
+                    </div>
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Content</label>
+                        <textarea name="content" id="content" class="form-control">Write something...</textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-dark">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
