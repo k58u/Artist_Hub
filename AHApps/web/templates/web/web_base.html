@@ -1,4 +1,3 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -12,22 +11,71 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>
-        {% block title %}
-        {% endblock %} | ARTIST HUB
+        {% block title %}{% endblock %} | ARTIST HUB
     </title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-
+    
+        /* Update to a vibrant dark background that's not pure black */
+        body {
+            background-color: #FFFFFF;  /* Dark muted purple/gray for depth without being black */
+            color: #000;
+        }
         .header-pacifico-regular {
             font-family: "Pacifico", cursive;
             font-weight: 400;
             font-style: normal;
+            color: #f0f0f0;
         }
+        /* Dark theme navbar with vibrant artistic gradient */
+        .navbar {
+            background: linear-gradient(135deg, #4e4376 0%, #2b5876 50%, #00c6ff 100%);
+            padding: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+        .navbar-brand img {
+            border: 2px solid #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+        }
+        .navbar-nav .nav-link {
+            font-size: 1.2rem;
+            padding: 0.75rem 1.25rem;
+            color: #f0f0f0;
+            font-weight: bold;
+            letter-spacing: 0.05rem;
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+        .navbar-nav .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: #00c6ff;
+        }
+        .dropdown-menu {
+            background-color: #ffffff;  /* White background for the dropdown */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  /* Softer shadow to keep it light */
+        }
+        .dropdown-menu .dropdown-item {
+            font-size: 1rem;
+            color: #333333;  /* Dark text color for better contrast on white */
+            transition: background-color 0.3s ease;
+        }
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #f0f0f0;  /* Light gray hover effect to contrast with white */
+        }
+    
+        .dropdown-item i {
+            margin-right: 10px;}
+    
+        .container {
+            margin-top: 20px;
+        }
+    
     </style>
-    {% block styles %}
-    {% endblock %}
-</head>
 
+    {% block styles %}{% endblock %}
+</head>
 <body>
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded">
@@ -46,31 +94,32 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{% url 'catalogue_view' %}">Catalogue</a>
                         </li>
-                        <!-- Add more nav items here if needed -->
+                        <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'customer_care_view' %}">Customer Care</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page"href="{% url 'news' %}">News</a>
+                        </li>
                     </ul>
                     <ul class="navbar-nav mb-2 mb-lg-0 ">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle me-5" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="{{ request.session.artist_profile_image }}" height="35px" width="35px" style="border-radius: 50%; object-fit: cover;" class="profile-image img-circle">
-                                {{ request.session.artist_id }} 
+                        <li class="nav-item dropdown ">
+                            <a class="nav-link dropdown-toggle me-5" href="#" id="navbarDropdownMenuLink" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="{{request.session.artist_profile_image}}" height="35px" style="border-radius: 50%;" class="profile-image img-circle">
+                                {{request.session.artist_id}} 
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <li><a class="dropdown-item text-dark" href="{% url 'profile_view' %}"><i class="bi bi-person-circle"></i> Profile settings</a></li>
-                                <li><a class="dropdown-item text-dark" href="#"><i class="bi bi-lock"></i> Forgot password?</a></li>
+                                <li><a class="dropdown-item text-dark" href="{% url 'forgot_password_view'%}"><i class="bi bi-lock"></i> Forgot password?</a></li>
                                 <li><a class="dropdown-item text-dark" href="{% url 'logout' %}"><i class="bi bi-box-arrow-left"></i> Logout</a></li>
                             </ul>
                         </li>
-                        
                     </ul>
                 </div>
             </div>
         </nav>
     </div>
-
-    
-
         <div class="container">
-        <!-- start message section -->
         {% if messages %}
         <!-- <div class="container-fluid"> -->
         {% for message in messages %}
@@ -91,6 +140,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-</body>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    </body>
 
 </html>

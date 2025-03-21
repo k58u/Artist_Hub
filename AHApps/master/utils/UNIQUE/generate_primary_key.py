@@ -1,6 +1,5 @@
 import uuid
 
-
 def create_primary_key(postfix):
     """
     Generate a unique primary key or filename using UUID and a postfix.

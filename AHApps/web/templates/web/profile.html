@@ -1,44 +1,60 @@
-
-{% extends 'web\web_base.html' %}
+{% extends 'web/web_base.html' %}
 {% load static %}
+
 {% block title %}
 Profile
 {% endblock %}
 
 {% block styles %}
+<style>
+    .label-dark {
+        color: #555; /* A slightly dark color */
+        font-weight: bold;
+    }
+    #mobile-input {
+        outline: none; /* Removes the blue border */
+        box-shadow: none; /* Removes any shadow that might appear */
+        border: 1px solid #ccc; /* Optional: define your own border style */
+        transition: border-color 0.3s ease; /* Optional: smooth border transition */
+    }
+    
+    #mobile-input:focus {
+        border-color: #666; /* Optional: custom border color on focus */
+    }
+</style>
 {% endblock %}
 
 {% block web %}
 <div class="container py-5">
     <div class="row">
+        <!-- Profile Card -->
         <div class="col-lg-4">
             <div class="card mb-4">
                 <div class="card-body text-center">
-                    <img src="{{ profile.profile.url }}" alt="avatar" class="rounded-circle img-fluid"
-                    style="width: 150px; height: 150px; object-fit: cover;">
-                    <h5 class="my-3">{{profile.first_name|title}} {{profile.last_name|title}}</h5>
-                    <p class="text-muted mb-1">{{profile.artist_id.artist_id}}</p>
-                    <p class="text-muted mb-4">{()}</p>
-                    <div class="d-flex justify-content-center mb-2">
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-dark" data-bs-toggle="modal"
-                            data-bs-target="#editProfile">
+                    <img src="{{ profile.profile.url }}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                    <h5 class="my-3 label-dark">{{ profile.first_name|title }} {{ profile.last_name|title }}</h5>
+                    <p class="text-muted mb-1">{{ profile.artist_id.artist_id }}</p>
+
+                    <div class="address-area mb-4">
+                        <p class="text-muted mb-2 label-dark">Address:</p>
+                        <p class="text-muted mb-4">{{ profile.address|default:"Address not set" }}</p>
+
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#editProfile">
                             Edit profile
                         </button>
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="editProfile" tabindex="-1" aria-labelledby="editProfileLabel"
-                            aria-hidden="true">
+                        <!-- Edit Profile Modal -->
+                        <div class="modal fade" id="editProfile" tabindex="-1" aria-labelledby="editProfileLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="editProfileLabel">Edit your profile</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <form action="{% url 'profile_update' %}" method="post" enctype="multipart/form-data">
                                         {% csrf_token %}
                                         <div class="modal-body">
+                                            <!-- Profile Image Upload -->
                                             <div class="mb-3 text-start">
                                                 <label for="profile" class="form-label">Upload profile</label>
                                                 {% if profile.profile %}
@@ -49,18 +65,32 @@ Profile
                                                 {% endif %}
                                                 <input type="file" class="form-control" id="profile" name="profile">
                                             </div>
+
+                                            <!-- First Name -->
                                             <div class="mb-3 text-start">
                                                 <label for="first_name" class="form-label">First-name</label>
-                                                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="e.g. Eric" value="{{profile.first_name|title}}">
+                                                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="e.g. John" value="{{ profile.first_name|title }}">
                                             </div>
+
+                                            <!-- Last Name -->
                                             <div class="mb-3 text-start">
                                                 <label for="last_name" class="form-label">Last-name</label>
-                                                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="e.g. shah" value="{{profile.last_name|title}}">
+                                                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="e.g. Smith" value="{{ profile.last_name|title }}">
                                             </div>
+
+                                            <!-- Mobile -->
                                             <div class="mb-3 text-start">
                                                 <label for="mobile" class="form-label">Mobile</label>
-                                                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="(+91) 678 9876 456" value="{{profile.artist_id.mobile}}">
+                                                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="(+91) 678 9876 456" value="{{ profile.artist_id.mobile }}">
                                             </div>
+
+                                            <!-- Address -->
+                                            <div class="mb-3 text-start">
+                                                <label for="address" class="form-label">Address</label>
+                                                <input type="text" class="form-control" id="address" name="address" placeholder="e.g. 123 Main St" value="{{ profile.address|title }}">
+                                            </div>
+
+                                            <!-- Gender -->
                                             <div class="mb-3 text-start">
                                                 <label for="gender" class="form-label">Gender</label>
                                                 <select name="gender" id="gender" class="form-select">
@@ -70,65 +100,75 @@ Profile
                                                     <option value="other" {% if profile.gender == 'other' %}selected{% endif %}>Other</option>
                                                 </select>
                                             </div>
-                                            
-                                           
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                             <button type="submit" class="btn btn-dark">Save changes</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                        <a href="{% url 'logout' %}" class="btn btn-outline-danger ms-1"> Logout </a>
+
+                        <a href="{% url 'logout' %}" class="btn btn-outline-danger ms-1">Logout</a>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Profile Details -->
         <div class="col-lg-8">
             <div class="card mb-4">
                 <div class="card-body">
+                    <!-- Full Name -->
                     <div class="row">
                         <div class="col-sm-3">
-                            <p class="mb-0">Full Name</p>
+                            <p class="mb-0 label-dark">Full Name</p>
                         </div>
                         <div class="col-sm-9">
-                            <p class="text-muted mb-0">{{profile.first_name|title}} {{profile.last_name|title}}</p>
+                            <p class="text-muted mb-0">{{ profile.first_name|title }} {{ profile.last_name|title }}</p>
                         </div>
                     </div>
                     <hr>
+
+                    <!-- Email -->
                     <div class="row">
                         <div class="col-sm-3">
-                            <p class="mb-0">Email</p>
+                            <p class="mb-0 label-dark">Email</p>
                         </div>
                         <div class="col-sm-9">
-                            <p class="text-muted mb-0">{{profile.artist_id.email}}</p>
+                            <p class="text-muted mb-0">{{ profile.artist_id.email }}</p>
                         </div>
                     </div>
                     <hr>
+
+                    <!-- Mobile -->
                     <div class="row">
                         <div class="col-sm-3">
-                            <p class="mb-0">Mobile</p>
+                            <p class="mb-0 label-dark">Mobile</p>
                         </div>
                         <div class="col-sm-9">
-                            <p class="text-muted mb-0">{{profile.artist_id.mobile}}</p>
+                            <p class="text-muted mb-0" id="mobile-display" style="cursor: pointer;">{{ profile.artist_id.mobile }}</p>
+                            <input type="text" id="mobile-input" class="form-control" value="{{ profile.artist_id.mobile }}" style="display: none;">
                         </div>
                     </div>
                     <hr>
+
+                    <!-- Gender -->
                     <div class="row">
                         <div class="col-sm-3">
-                            <p class="mb-0">Gender</p>
+                            <p class="mb-0 label-dark">Gender</p>
                         </div>
                         <div class="col-sm-9">
-                            <p class="text-muted mb-0">{{profile.gender|title}}</p>
+                            <p class="text-muted mb-0">{{ profile.gender|title }}</p>
                         </div>
                     </div>
                     <hr>
+
+                    <!-- Date of Birth -->
                     <div class="row">
                         <div class="col-sm-3">
-                            <p class="mb-0">Date of Birth</p>
+                            <p class="mb-0 label-dark">Date of Birth</p>
                         </div>
                         <div class="col-sm-9">
                             {% if profile.date_of_birth %}
@@ -145,16 +185,16 @@ Profile
     </div>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Update Date of Birth functionality
         const updateLink = document.getElementById('updateDateOfBirthLink');
-    
         if (updateLink) {
             updateLink.addEventListener('click', function (event) {
                 event.preventDefault();
                 const newDateOfBirth = prompt('Enter your new date of birth (YYYY-MM-DD):');
-    
                 if (newDateOfBirth) {
                     fetch("{% url 'update_date_of_birth' %}", {
                         method: 'POST',
@@ -168,7 +208,7 @@ Profile
                     .then(data => {
                         if (data.success) {
                             alert('Date of birth updated successfully.');
-                            location.reload(); // Reload the page to reflect changes
+                            location.reload(); 
                         } else {
                             alert('Error updating date of birth.');
                         }
@@ -179,7 +219,51 @@ Profile
                 }
             });
         }
-    });
-    </script>
-    
+                // Mobile input display toggle
+                $('#mobile-display').on('click', function() {
+                    $(this).hide(); 
+                    const mobileInput = $('#mobile-input');
+                    mobileInput.show().focus(); // Show input and focus on it
+                    
+                    // Set the initial size based on current value
+                    updateInputWidth(mobileInput);
+                });
+                
+                $('#mobile-input').on('input', function() {
+                    // Update the input box width dynamically as the user types
+                    updateInputWidth($(this));
+                });
+        
+                $('#mobile-input').on('blur', function() {
+                    const mobile = $(this).val(); 
+                    $.ajax({
+                        url: "{% url 'update_mobile' %}",
+                        type: "POST",
+                        data: {
+                            mobile: mobile,
+                            csrfmiddlewaretoken: '{{ csrf_token }}'
+                        },
+                        success: function() {
+                            $('#mobile-display').text(mobile).show(); 
+                            $('#mobile-input').hide(); // Hide input after update
+                        },
+                        error: function() {
+                            alert('Failed to update mobile number.');
+                        }
+                    });
+                });
+        
+                function updateInputWidth(input) {
+                    const tempSpan = document.createElement('span');
+                    document.body.appendChild(tempSpan);
+                    tempSpan.style.visibility = 'hidden'; 
+                    tempSpan.style.whiteSpace = 'pre'; 
+                    tempSpan.style.font = window.getComputedStyle(input[0]).font; 
+                    tempSpan.textContent = input.val() || input.attr('placeholder'); 
+                    const width = tempSpan.getBoundingClientRect().width; 
+                    input.css('width', Math.max(width + 20, 120) + 'px'); 
+                    document.body.removeChild(tempSpan); 
+                }                
+            });        
+</script>
 {% endblock %}

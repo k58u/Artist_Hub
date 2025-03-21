@@ -1,0 +1,36 @@
+{% extends 'web/base.html' %}
+{% block title %}
+Random Images
+{% endblock %}
+{% block web %}
+    <style>
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .image-item {
+            text-align: center;
+        }
+        img {
+            max-width: 200px;
+            max-height: 300px;
+        }
+    </style>
+<body>
+    <h1>Search Results</h1>
+    <div class="image-container">
+        {% for image in images %}
+            <div class="image-item">
+                <img src="{{ image.imageUrl }}" alt="{{ image.title }}">
+                <p>{{ image.title }}</p>
+            </div>
+        {% empty %}
+            <p>No images found.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
+{% endblock %}
+

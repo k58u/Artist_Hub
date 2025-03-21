@@ -1,0 +1,194 @@
+{% extends 'web\web_base.html' %}
+{% load static %}
+{% block title %}
+Catalogue
+{% endblock %}
+
+{% block styles %}
+<style>
+    /* General page styling */
+    body {
+        background-color: #f8f9fa;
+    }
+
+    /* Card styles */
+    .card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out;
+        border: none;
+        border-radius: 15px;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .card-body {
+        flex-grow: 1;
+        padding: 20px;
+    }
+
+    .card-title {
+        font-weight: bold;
+        color: #343a40;
+    }
+
+    .card-text {
+        color: #6c757d;
+    }
+
+    .btn-dark {
+        background-color: #343a40;
+        border: none;
+    }
+
+    .btn-dark:hover {
+        background-color: #495057;
+    }
+
+    /* Category badge styling */
+    .badge {
+        font-size: 0.9rem;
+        margin-right: 5px;
+    }
+
+    /* Modal styles */
+    .modal-header {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .modal-content {
+        border-radius: 15px;
+    }
+    
+    .modal-body input, .modal-body textarea, .modal-body select {
+        border-radius: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block web %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-dark">Artist's Catalogue</h1>
+        <!-- Add Catalogue trigger button -->
+        <div>
+            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addCatalogue">
+                Add Catalogue
+            </button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCatalogue">
+                Delete Catalogue
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal for adding catalogue -->
+    <div class="modal fade" id="addCatalogue" tabindex="-1" aria-labelledby="addCatalogueLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCatalogueLabel">Add New Catalogue</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Catalogue Image</label>
+                            <input type="file" class="form-control" id="image" name="image" placeholder="Upload image">
+                        </div>
+                        <div class="mb-3">
+                            <label for="catalogue_category" class="form-label">Category</label>
+                            <select id="catalogue_category" class="form-select" name="categories" multiple>
+                                <option value="" selected disabled>Choose category</option>
+                                {% for Category in ArtistCatalogueCategory %}
+                                    <option value="{{ Category.id }}">{{ Category.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" name="title" class="form-control" id="title" placeholder="Enter title">
+                        </div>
+                        <div class="mb-3">
+                            <label for="content" class="form-label">Content</label>
+                            <textarea name="content" id="content" class="form-control" rows="4" placeholder="Write something..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" name="action" class="btn btn-dark" value="add">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for deleting catalogue -->
+    <div class="modal fade" id="deleteCatalogue" tabindex="-1" aria-labelledby="deleteCatalogueLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteCatalogueLabel">Delete Catalogue</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="delete">
+                    
+                    <label for="catalogue_id">Select Catalogue</label>
+                    <select id="catalogue_id" name="catalogue_id" required>
+                        <option value="" selected disabled>Select catalogue to delete</option>
+                        {% for catalog in catalogs %}
+                            <option value="{{ catalog.artist_catalogue_id }}">{{ catalog.title }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Delete Catalogue</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Catalogue cards -->
+    <div class="row">
+        {% for catalog in catalogs %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <!-- Catalogue image -->
+                <img src="{{ catalog.catalogue_image.url }}" class="card-img-top" alt="{{ catalog.title }}">
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ catalog.title }}</h5>
+                    <p class="card-text">{{ catalog.content|truncatewords:20 }}</p>
+
+                    <!-- Display categories -->
+                    <p class="text-light">
+                        <strong style="color: black;">Categories:</strong> 
+                        {% for category in catalog.categories.all %}
+                            <span class="badge bg-secondary text-light">{{ category.name }}</span>
+                        {% empty %}
+                            <span class="badge bg-warning text-dark">No Categories</span>
+                        {% endfor %}
+                    </p>
+                    <!-- Read More button -->
+                    <a href="{% url 'catalogue_details' catalogue_id=catalog.artist_catalogue_id %}" class="btn btn-warning">Read More</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-warning" role="alert">
+            No catalogs available for this artist.
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,8 +1,7 @@
-
 {% extends 'web/auth_base.html' %}
 {% load static %}
 {% block title %}
-Forgot Password
+Reset Password
 {% endblock %}
 
 {% block styles %}
@@ -16,7 +15,7 @@ Forgot Password
         margin: 0;
     }
 
-    .forgot-password-container {
+    .reset-password-container {
         background: #ffffff;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -25,18 +24,18 @@ Forgot Password
         width: 100%;
     }
 
-    .forgot-password-container h2 {
+    .reset-password-container h2 {
         margin-bottom: 1.5rem;
     }
 </style>
 {% endblock %}
 
 {% block auth %}
-<div class="forgot-password-container">
+<div class="reset-password-container">
     <div class="d-flex justify-content-center">
         <img src="{% static 'images/logo.png' %}" height="100px" alt="Logo">
     </div>
-    <h2 class="text-center header-pacifico-regular">Forgot Password</h2>
+    <h2 class="text-center header-pacifico-regular">Reset Password</h2>
      <!-- start message section -->
      {% if messages %}
      <!-- <div class="container-fluid"> -->
@@ -50,14 +49,22 @@ Forgot Password
      <!-- </div> -->
      {% endif %}
      <!-- end message section -->
-    <form action="" method="post">
-        <!-- password_reset_request -->
+    <form action="{% url 'password_reset_request' %}" method="post">
         {% csrf_token %}
+        <input type="hidden" value="{{email}}" name="email">
         <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Example@gmail.com" required>
+            <label for="otp" class="form-label">OTP</label>
+            <input type="text" class="form-control" id="otp" name="otp" placeholder="Enter OTP" required>
         </div>
-        <button type="submit" class="btn btn-dark w-100">Send otp</button>
+        <div class="mb-3">
+            <label for="new_password" class="form-label">New Password</label>
+            <input type="password" class="form-control" id="new_password" name="new_password" placeholder="New Password" required>
+        </div>
+        <div class="mb-3">
+            <label for="confirm_password" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm New Password" required>
+        </div>
+        <button type="submit" class="btn btn-dark w-100">Reset Password</button>
         <div class="d-flex justify-content-between mt-2">
             <a href="{% url 'login_view' %}">Login</a>
             <a href="{% url 'register_view' %}">Register?</a>

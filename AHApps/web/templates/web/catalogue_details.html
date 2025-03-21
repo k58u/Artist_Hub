@@ -1,0 +1,132 @@
+{% extends 'web\web_base.html' %}
+{% load static %}
+{% block title %}
+Catalogue Details
+{% endblock %}
+
+{% block styles %}
+<style>
+    .catalogue-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .catalogue-image {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        object-fit: contain;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .catalogue-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #343a40;
+        margin-bottom: 15px;
+    }
+
+    .catalogue-content {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #495057;
+        text-align: justify;
+        margin-bottom: 20px;
+    }
+
+    .btn-back, .btn-edit {
+        margin-top: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block web %}
+<div class="catalogue-container text-center">
+    <!-- Catalogue Image -->
+    <img src="{{ catalog.catalogue_image.url }}" class="catalogue-image" alt="{{ catalog.title }}">
+
+    <!-- Catalogue Title -->
+    <div class="catalogue-title">
+        {{ catalog.title }}
+    </div>
+
+    <!-- Catalogue Content -->
+    <div class="catalogue-content">
+        {{ catalog.content|linebreaks }}
+    </div>
+
+    <!-- Edit Button -->
+    <button type="button" class="btn btn-primary btn-edit" data-bs-toggle="modal" data-bs-target="#editModal">
+        Edit
+    </button>
+</div>
+
+<!-- Modal for Editing Catalogue -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit Catalogue</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editCatalogueForm" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="editTitle" class="form-label">Title</label>
+                <input type="text" name="title" class="form-control" id="editTitle" value="{{ catalog.title }}">
+            </div>
+            <div class="mb-3">
+                <label for="editContent" class="form-label">Content</label>
+                <textarea class="form-control" name="content" id="editContent" rows="3">{{ catalog.content }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" id="saveEditBtn">Save changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $('#editCatalogueForm').on('submit', function(event){
+            event.preventDefault();
+
+            const formData = $(this).serialize();
+
+            $.ajax({
+                url: '{% url 'update_catalogue' catalog.artist_catalogue_id %}',
+                method: "POST",
+                data: formData,
+                success: function(response){
+                    if (response.success) {
+                        // Update the title and content on the page
+                        $('.catalogue-title').text($('#editTitle').val());
+                        $('.catalogue-content').html($('#editContent').val().replace(/\n/g, '<br>'));  // If handling line breaks
+
+                        // Hide the modal
+                        var modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
+                        modal.hide();
+                    } else {
+                        alert('Error updating catalogue: ' + response.message);
+                    }
+                },
+                error: function(xhr, status, error){
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

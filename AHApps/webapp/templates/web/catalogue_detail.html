@@ -1,0 +1,85 @@
+{% block title %}
+{% endblock %}
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #e9ecef;
+        color: #212529;
+    }
+    .catalogue-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 30px;
+        background: linear-gradient(145deg, #ffffff, #f8f9fa);
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .catalogue-image {
+        width: 80%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 15px;
+        margin: 0 0 15px 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .catalogue-title {
+        font-size: 2.2rem;
+        font-weight: bold;
+        color: #495057;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    .catalogue-category {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #343a40;
+        margin-bottom: 20px;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .catalogue-category span {
+        color: #fff;
+        padding: 7px 15px;
+        border-radius: 25px;
+        margin-right: 8px;
+        font-weight: bold;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out, background-color 0.3s ease-in-out;
+        display: inline-block;
+    }
+    .catalogue-category span:hover {
+        transform: scale(1.05);
+    }
+    .catalogue-content {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        color: #6c757d;
+        text-align: justify;
+        margin-bottom: 30px;
+    }
+    .category-1 { background-color: #26c888; } 
+</style>
+<div class="catalogue-container text-center">
+    <img src="{{ catalog.catalogue_image.url }}" class="catalogue-image" alt="{{ catalog.title }}">
+    <div class="catalogue-title">
+        {{ catalog.title }}
+    </div>
+    <div class="catalogue-category">
+        Categories:
+        {% for category in categories %}
+            <span class="category-{{ forloop.counter }}">{{ category.name }}</span>
+        {% empty %}
+            No categories available.
+        {% endfor %}
+    </div>
+    <div class="catalogue-content">
+        {{ catalog.content|linebreaks }}
+    </div>
+</div>

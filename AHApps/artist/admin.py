@@ -8,7 +8,7 @@ class ArtistAdmin(admin.ModelAdmin):
 admin.site.register(Artist, ArtistAdmin)
 
 class ArtistProfileAdmin(admin.ModelAdmin):
-    list_display = ['artist_id_id', 'first_name', 'last_name', 'gender', 'date_of_birth']
+    list_display = ['artist_id_id', 'first_name', 'last_name', 'gender', 'date_of_birth','address']
     list_filter = ['gender']
     list_per_page = 10
 admin.site.register(ArtistProfile, ArtistProfileAdmin)

@@ -1,0 +1,832 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARTIST-HUB</title>
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+  <style>
+    /* Ensure full height for the carousel */
+    .carousel-item {
+      height: 100vh; /* Full viewport height */
+    }
+
+    .carousel-item img {
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
+    }
+
+    /* Centered overlay text */
+    .carousel-caption {
+      top: 50%;
+      transform: translateY(-50%);
+      bottom: initial;
+    }
+
+    .carousel-caption h1, .carousel-caption p {
+      color: white;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+    }
+    .card {
+      position: relative;
+      color: white; /* Set font color to white */
+    }
+
+    .card img {
+      height: 300px;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1;
+    }
+
+    /* Content overlay */
+    .card-body {
+      position: relative;
+      z-index: 2; /* Place on top of the image */
+      background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .card h5, .card p {
+      margin: 0;
+    }
+    .menu,
+.nav-icon span {
+	transition: all .3s ease-in-out
+}
+.menu .nav-menu li a,
+.nav-menu li a {
+	line-height: 56px
+}
+*,
+::after,
+::before {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box
+}
+.effectTab-header .caption,
+.effectTab-header .title {
+	font-weight: 700;
+	padding-bottom: 20px;
+	position: relative;
+	display: inline-block;
+	color: #555;
+	margin: 0 0 20px;
+	text-align: center;
+	text-transform: uppercase
+}
+.effectTab-header .title {
+	font-size: 36px;
+	font-family: Oswald, sans-serif
+}
+
+.effectTab-header .caption {
+	font-size: 30px;
+	font-family: 'Open Sans', sans-serif
+}
+.column-1,
+.column-10,
+.column-11,
+.column-12,
+.column-2,
+.column-3,
+.column-4,
+.column-5,
+.column-7,
+.column-8,
+.column-9 {
+	float: left;
+	padding-left: 20px
+}
+.effectTab-header .title::after,
+.effectTab-header .title::before {
+	position: absolute;
+	background: linear-gradient(to right, #ed6ea0 0, #ec8c69 100%);
+	content: ""
+}
+.effectTab-header .title::before {
+	left: 0;
+	width: 146%;
+	height: 3px;
+	margin-left: -28%;
+	bottom: -1.5px
+}
+.effectTab-header .title::after {
+	left: 50%;
+	width: 25px;
+	height: 25px;
+	bottom: -26px;
+	margin: 0 0 0 -10px;
+	-webkit-clip-path: polygon(75% 0, 75% 69%, 41% 93%, 0 68%, 0 0);
+	clip-path: polygon(75% 0, 75% 69%, 41% 93%, 0 68%, 0 0)
+}
+body {
+	background-color: #F5F5F5;
+}
+.column-1 {
+	width: 8.333333333333333%
+}
+.column-2 {
+	width: 16.66666666666667%
+}
+.column-3 {
+	width: 25%
+}
+.column-4 {
+	width: 33.33333333333333%
+}
+.column-5 {
+	width: 41.66666666666667%
+}
+.column-6 {
+	width: 50%;
+	float: left;
+	padding: 15px
+}
+.column-7 {
+	width: 58.33333333333333%
+}
+.column-8 {
+	width: 66.66666666666667%
+}
+.column-9 {
+	width: 55%
+}
+.column-10 {
+	width: 83.33333333333333%
+}
+.column-11 {
+	width: 91.66666666666667%
+}
+.column-12,
+.wrapper-around{
+	width: 93%
+  
+}
+.nav-icon,
+.navigation {
+	float: right
+}
+.custom-row::after {
+	content: "";
+	display: table;
+	clear: both
+}
+.wrapper {
+	max-width: 1440px;
+	margin: 0 auto;
+	position: relative
+}
+.header {
+	background-color: #485666;
+	padding: 8px 0;
+	position: static;
+	z-index: 2000
+}
+.header h1 {
+	color: #fff;
+	font-family: Poppins;
+	font-weight: 400;
+	font-size: 2.2rem;
+	padding-left: 40px
+}
+.rotate {
+	position: absolute;
+	transform: rotate(-20deg);
+	left: 0;
+	font-size: 2.8rem;
+	top: 5px
+}
+.ex_padd {
+	padding-top: 170px!important
+}
+.nav-icon-container {
+	display: block
+}
+.nav-icon {
+	width: 50px;
+	height: 50px;
+	border: 2px solid #fff;
+	border-radius: 50%;
+	position: relative;
+	cursor: pointer;
+	z-index: 100
+}
+.nav-icon span {
+	width: 60%;
+	height: 2px;
+	background-color: #fff;
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, -50%)
+}
+.nav-icon-1 {
+	top: 30%
+}
+.nav-icon-2 {
+	top: 50%
+}
+.nav-icon-3 {
+	top: 70%
+}
+.nav-icon.active .nav-icon-1 {
+	top: 50%;
+	transform: rotate(45deg);
+	left: 22%
+}
+.nav-icon.active .nav-icon-3 {
+	top: 50%;
+	transform: rotate(-45deg);
+	left: 22%
+}
+.nav-icon.active .nav-icon-2 {
+	width: 0
+}
+.nav-menu {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around
+}
+.nav-menu li {
+	list-style: none;
+	position: relative
+}
+.nav-menu li a {
+	color: #fff;
+	text-decoration: none;
+	display: inline-block;
+	padding: 0 20px
+}
+.nav-menu li:after,
+.nav-menu li:before {
+	content: "";
+	position: absolute;
+	height: 3px;
+	background-color: rgba(255, 255, 255, .2);
+	bottom: 0;
+	width: 0;
+	transition: all .3s ease-in-out
+}
+.nav-menu li:before {
+	left: 0
+}
+.nav-menu li:after {
+	right: 0
+}
+.nav-menu li:hover:after,
+.nav-menu li:hover:before {
+	width: 50%
+}
+.nav-menu li.active:after,
+.nav-menu li.active:before {
+	background-color: rgba(0, 128, 128, 1)
+}
+.menu {
+	width: 200px;
+	background-color: #0B466C;
+	text-align: center;
+	padding: 40px;
+	position: fixed;
+	top: 96px;
+	right: -200px;
+	overflow: scroll;
+	height: calc(100% - 96px);
+	z-index: 1000
+}
+.menu.active {
+	right: 0
+}
+.menu .nav-menu {
+	flex-direction: column;
+	width: 150px
+}
+.menu .nav-menu li {
+	margin: 10px 0;
+	width: 80%
+}
+.box-tab {
+	margin: 10px 0
+}
+.effect {
+	margin: auto;
+	box-shadow: 0 0 15px 5px rgba(0, 0, 0, .07);
+	background-color: #fff;
+	border: 5px solid #f5f5f5
+}
+.tab-container {
+	padding: 50px 0
+}
+.tab-head {
+	text-align: center;
+	padding-bottom: 10px;
+	margin-bottom: 20px;
+	margin-left: 100px;
+	margin-right: 100px;
+}
+.tab .effect {
+	position: relative;
+	overflow: hidden;
+	max-height: 240px;
+	max-width: 350px;
+	background: #3085a3;
+	text-align: center;
+	cursor: pointer
+}
+
+.grid-width3,
+.grid-width6 {
+	max-height: 270px!important;
+	max-width: 530px!important
+}
+
+.grid-width8 {
+	max-width: 700px!important
+}
+
+.tab .effect img {
+	position: relative;
+	display: block;
+	min-height: 100%;
+	opacity: .8
+}
+
+.tab .effect .tab-text {
+	padding: 2em;
+	color: #fff;
+	
+	font-size: 1.25rem;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%
+}
+
+.tab-text h2 {
+	color: #fff;
+	margin: 0;
+	font-size: 1.5rem
+}
+
+.tab-text p {
+	color: #fff;
+	margin: 0;
+	font-size: 1rem
+}
+
+.hide {
+	display: none
+}
+.effect.effect-four {
+	background: #2e5d5a
+}
+
+.effect-four .tab-text h2 {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	padding: 1em 1.2em;
+	font-family: Oswald
+}
+
+.effect-four .tab-text p {
+	width: 55%;
+	font-size: 68%;
+	line-height: 1;
+	letter-spacing: 1px;
+	text-align: left;
+	float: right;
+	padding-left: 15px;
+	border-left: 1px solid #fff;
+	border-bottom: 1px solid #fff;
+	transform: translate3d(40px, 0, 0);
+	-webkit-transform: translate3d(40px, 0, 0);
+	opacity: 0;
+	transition: all .35s;
+	font-family: "Open sans";
+	padding-bottom: 5px
+}
+.effect-four .tab-text p:after,
+.effect-four .tab-text p:before {
+	width: 10px;
+	height: 10px;
+	background-color: rgba(255, 255, 255, 1);
+	border-radius: 50px;
+	content: "center";
+	position: absolute
+}
+
+.effect-four .tab-text p:after {
+	top: -5px;
+	left: -5px;
+	-webkit-clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+	clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%)
+}
+.effect-four .tab-text p:before {
+	right: 0;
+	bottom: -6px;
+	-webkit-clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+	clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%)
+}
+.effect.effect-four .icons-block {
+	z-index: 1000;
+	position: absolute;
+	top: 10px;
+	width: 100%;
+	left: 0;
+	text-align: left;
+	padding-left: 10px;
+	padding-top: 9px
+}
+.effect.effect-four .icon-c3 {
+	padding-left: 5px;
+	padding-top: 0
+}
+.effect.effect-four .icons-block .social-icon-1,
+.effect.effect-four .icons-block .social-icon-2,
+.effect.effect-four .icons-block .social-icon-3 {
+	transition: all .5s ease-in-out;
+	opacity: 0
+}
+.effect.effect-four:hover .social-icon-1 {
+	opacity: 1;
+	transition-delay: .3s;
+	transition-duration: .5s
+}
+.effect.effect-four:hover .social-icon-2 {
+	opacity: 1;
+	transition-delay: .4s;
+	transition-duration: .5s
+}
+.effect.effect-four:hover .social-icon-3 {
+	opacity: 1;
+	transition-delay: .5s;
+	transition-duration: .5s
+}
+.effect.effect-four .icons-block i {
+	color: rgba(255, 255, 255, .9);
+	padding-left: 7px;
+	font-size: 1.2rem
+}
+.effect-four:hover p {
+	transform: translate3d(0, 0, 0);
+	opacity: 1
+}
+.effect.effect-four img {
+	max-width: none;
+	width: calc(100% + 60px);
+	opacity: 1;
+  space:between;
+	transform: translate3d(0, 0, 0) scale(1.12);
+	transition: all .35s;
+	-webkit-transform: translate3d(0, 0, 0) scale(1.12);
+	-webkit-transition: all .35s
+}
+.effect.effect-four:hover img {
+	transform: translate3d(-20px, 0, 0) scale(1);
+	-webkit-transform: translate3d(-20px, 0, 0) scale(1);
+	opacity: .5
+}
+.section {
+            background-color: black;
+            color: white;
+            padding: 4rem 1rem;
+            text-align: center;
+            
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0;
+            height:max;
+            
+        }
+        .title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+        .description {
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+            max-width: 640px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background-color: #ff6f61;
+            color: white;
+        }
+        .btn-secondary {
+            border: 2px solid #ff6f61;
+            color: #ff6f61;
+            background-color: transparent;
+        }
+        @media (min-width: 640px) {
+            .button-group {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+        .gallery-wrapper {
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 2rem 0;
+        }
+        .gallery-wrapper::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for Webkit browsers */
+        }
+        .gallery {
+            display: inline-flex;
+            gap: 1rem;
+            cursor: grab;
+        }
+        .card {
+            width: 300px;
+            height: 350px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: center;
+            background-color: #fff;
+            display: inline-block;
+        }
+        .card img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .card:hover img {
+            transform: scale(1.05);
+        }
+        .card-content {
+            padding: 1rem;
+        }
+        .card-title {
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+        }
+        .card-price {
+            color: green;
+            font-weight: bold;
+        }
+        .quote-container {
+          text-align: center; /* Align the quote to the center */
+          margin-top:60px;
+          margin-bottom:-15px;
+        }
+        .quote-text {
+          font-style: italic; /* Keep the text italic */
+          font-size: 2em; /* Increase text size */
+          font-weight: bold; /* Make the text thick (bold) */
+           color: #1a1a1a; /* Dark text color */
+           border-left: 5px solid #000;
+        }
+        .btn-custom {
+          background-color: white; /* White background */
+          color: black; /* Black text */
+          
+          padding: 10px 50px; /* Small padding for a smaller button */
+          font-size: 0.875rem; /* Bootstrap small button font size */
+      }
+      
+      .btn-custom:hover {
+          background-color: black; /* Change background to black on hover */
+          color: white; /* Change text color to white on hover */
+      }
+        
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const wrapper = document.querySelector('.gallery-wrapper');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        wrapper.addEventListener('mousedown', (e) => {
+            isDown = true;
+            wrapper.classList.add('active');
+            startX = e.pageX - wrapper.offsetLeft;
+            scrollLeft = wrapper.scrollLeft;
+        });
+        wrapper.addEventListener('mouseleave', () => {
+            isDown = false;
+            wrapper.classList.remove('active');
+        });
+        wrapper.addEventListener('mouseup', () => {
+            isDown = false;
+            wrapper.classList.remove('active');
+        });
+        wrapper.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - wrapper.offsetLeft;
+            const walk = (x - startX) * 2; //scroll-fast
+            wrapper.scrollLeft = scrollLeft - walk;
+        });
+    });
+</script>
+</head>
+<body>
+  <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{% static 'images/back3.jpg' %}" class="d-block w-100" alt="Slide 1">
+        <div class="carousel-caption text-center">
+          <h1>Welcome to Artist-Hub</h1>
+          <a href="{% url 'base' %}" class="btn btn-custom">Explor now</a>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/back2.jpg' %}" class="d-block w-100" alt="Slide 2">
+        <div class="carousel-caption text-center">
+          <h1>Explore and Collect The Perfect Artwork</h1>
+          <p>From Our Handpicked Collection </p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/back1.png' %}" class="d-block w-100" alt="Slide 3">
+        <div class="carousel-caption text-center">
+          <h1>Our Focus Is the artist</h1>
+          <p>Inspired by the Visionary's Touch</p>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  <div class="quote-container">
+    <p class="quote-text">"Thinking about the artist and your investment"</p>
+  </div>
+  <div>
+    <p class="fs-1 fw-bolder text-center pt-5 pb-3">FEATURED ARTWORK</p>
+  </div>
+</head>
+<body>
+    <div class="gallery-wrapper">
+        <div class="gallery">
+            <div class="card">
+              <img src="{% static 'images/slider1.jpg' %}">
+                <div class="card-content">
+                </div>
+            </div>
+            <div class="card">
+              <img src="https://render.fineartamerica.com/images/rendered/default/poster/6.5/8/break/images/artworkimages/medium/1/girl-with-umbrella-and-falling-feathers-johan-swanepoel.jpg">
+                <div class="card-content">
+                </div>
+            </div>
+            <div class="card">
+              <img src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/moon-rising-steve-henderson.jpg">
+                <div class="card-content">
+                </div>
+            </div>
+            <div class="card">
+              <img src="https://render.fineartamerica.com/images/rendered/default/poster/5.5/8/break/images-medium-5/city-tunes-neelanjana-bandyopadhyay.jpg">
+                <div class="card-content">
+                </div>
+            </div>
+            <div class="card">
+              <img src="https://render.fineartamerica.com/images/rendered/default/poster/6.5/10/break/images/artworkimages/medium/1/raining-diego-fernandez.jpg">
+                <div class="card-content">
+                </div>
+            </div>
+            <div class="card">
+              <img src="{% static 'images/slider6.jpg' %}">
+                <div class="card-content">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+  <div class="ART">
+    <p class="fs-1 fw-bolder text-center pb-4 pt-3 Contact-center">ART COLLECTION</p>
+  </div>
+  <div class="gallary">
+  <div class="column-12 tab column-xs-12">
+    <div class="custom-row padding">
+      <div class="column-4 column-md-6 column-xs-12 column-sm-6 box-tab width-250px">
+        <div class="effect effect-four">
+          <img src="https://render.fineartamerica.com/images/images-profile-flow/400/images/artworkimages/mediumlarge/3/my-dream-place-tithi-luadthong.jpg" class="img-fluid">
+          <div class="tab-text">
+            <h2>My Dream Place</h2>
+            <p>Beautiful scenery of the woman standing alone on a wooden pier looking at colorful 
+              clouds in the sky, digital art style, illustration painting</p>
+            <div class="icons-block"> <a href="#" class="social-icon-1"><i class="fa fa-facebook-official"></i></a> <a href="#" class="social-icon-2"><i class="fa fa-twitter-square"></i></a> <a href="#" class="social-icon-3"><i class="fa fa-youtube-square"></i></a> </div>
+          </div>
+        </div>
+      </div>
+      <div class="column-4 column-md-6 column-xs-12 column-sm-6 box-tab hide visible-sm visible-md">
+        <div class="effect effect-four">
+          <img src="{% static 'images/foot3.jpg' %}">
+          <div class="tab-text">
+            <h2>Tente - Heitor Branquinho</h2>
+            <p>Designed to help you complete your layout designing</p>
+            <div class="icons-block"> <a href="#" class="social-icon-1"><i class="fa fa-facebook-official"></i></a> <a href="#" class="social-icon-2"><i class="fa fa-twitter-square"></i></a> <a href="#" class="social-icon-3"><i class="fa fa-youtube-square"></i></a> </div>
+          </div>
+        </div>
+      </div>
+      <div class="column-8 hide-sm hide-md hide-xs box-tab">
+        <div class="effect grid-width8 effect-four">
+          <img src="https://images.fineartamerica.com/images-medium-large-5/majestic-city-michael-mullan.jpg" class="img-fluid">
+          <div class="tab-text">
+            <h2>Majestic City</h2>
+            <p>In the foreground, a bridge resembling the Brooklyn Bridge spans across the scene, 
+              while rich textures and warm colors give the piece an abstract feel. </p>
+            <div class="icons-block"> <a href="#" class="social-icon-1"><i class="fa fa-facebook-official"></i></a> <a href="#" class="social-icon-2"><i class="fa fa-twitter-square"></i></a> <a href="#" class="social-icon-3"><i class="fa fa-youtube-square"></i></a> </div>
+          </div>
+        </div>
+      </div>
+      <div class="column-6 hide-xs hide-md hide-sm box-tab">
+        <div class="effect grid-width6 effect-four">
+          <img src="{% static 'images/foot1.jpg' %}">
+          <div class="tab-text">
+            <h2>Radiance in Reflection</h2>
+            <p> A blend of introspection and vibrancy, with a serene figure bathed in warm tones of 
+              orange and yellow </p>
+            <div class="icons-block"> <a href="#" class="social-icon-1"><i class="fa fa-facebook-official"></i></a> <a href="#" class="social-icon-2"><i class="fa fa-twitter-square"></i></a> <a href="#" class="social-icon-3"><i class="fa fa-youtube-square"></i></a> </div>
+          </div>
+        </div>
+      </div>
+      <div class="column-3 hide-xs hide-md hide-sm box-tab">
+        <div class="effect grid-width3 effect-four">
+          <img src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/deep-in-the-canyon-cody-delong.jpg" class="img-fluid">
+          <div class="tab-text">
+            <h2>Deep in the Canyon</h2>
+            <p>The brushwork is big and bold like the canyon itself, and this painting succeeds in 
+              capturing some of the impact you feel at the Grand Canyon.</p>
+            <div class="icons-block icon-c3"> <a href="#" class="social-icon-1"><i class="fa fa-facebook-official"></i></a> <a href="#" class="social-icon-2"><i class="fa fa-twitter-square"></i></a> <a href="#" class="social-icon-3"><i class="fa fa-youtube-square"></i></a> </div>
+          </div>
+        </div>
+      </div>
+      <div class="column-3 hide-xs hide-md hide-sm box-tab">
+        <div class="effect grid-width3 effect-four">
+          <img src="https://render.fineartamerica.com/images/images-profile-flow/400/images/artworkimages/mediumlarge/1/vintage-travel-poster-paris-debbie-dewitt.jpg" class="img-fluid">
+          <div class="tab-text">
+            <h2>Vintage Travel Paris </h2>
+            <p>Eiffel Tower in Paris layered over gray planked wood and a vintage map of France. </p>
+            <div class="icons-block icon-c3"> <a href="#" class="social-icon-1"><i class="fa fa-facebook-official"></i></a> <a href="#" class="social-icon-2"><i class="fa fa-twitter-square"></i></a> <a href="#" class="social-icon-3"><i class="fa fa-youtube-square"></i></a> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  </section>
+  <section class="wrapper-full tab-container effectTab-header" id="style_5">
+  <div class="wrapper tab-item">
+  <div class="custom-row">
+  <div class="wrapper" align ="center">
+  </div>
+  </div> 
+  <section class="section">
+	<div class="container">
+		<h2 class="title">Join Our Creative Community</h2>
+		<p class="description">
+      Connect as an artist with fellow artists, share your work, and get inspired by amazing creations from around the world.</p>
+		<div class="button-group">
+			<a href="{% url 'register_view' %}" class="btn btn-primary">Sign Up Now</a>
+			<a href="#" class="btn btn-secondary ">Learn More</a>
+		</div>
+	</div>
+</section>
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

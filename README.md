@@ -1,1 +1,1 @@
-# Artist_Hub
+# artist-hub

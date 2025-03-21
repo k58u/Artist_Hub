@@ -5,8 +5,200 @@ Dashboard
 {% endblock %}
 
 {% block styles %}
+<style>
+    /* Background Styling */
+    body {
+        background: url('https://source.unsplash.com/1600x900/?art,abstract') no-repeat center center fixed;
+        background-size: cover;
+        color: #ffffff;
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+    }
+
+    /* Card Styling */
+    .card {
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 12px;
+        backdrop-filter: blur(15px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s ease-in-out;
+        overflow: hidden;
+    }
+
+    .card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Card Header */
+    .title h3 {
+        color: #ffcc00;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.1);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        text-align: center;
+    }
+
+    /* Badge Styling */
+    .badge {
+        background-color: #ffcc00;
+        color: black;
+        padding: 6px 12px;
+        font-weight: bold;
+        border-radius: 10px;
+    }
+
+    /* List Group Items */
+    .list-group-item {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border: none;
+        transition: all 0.2s;
+    }
+
+    .list-group-item:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Forum Links */
+    .forum-link {
+        color: #ffcc00;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .forum-link:hover {
+        color: #ffffff;
+        text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+    }
+
+    /* Section Spacing */
+    .section {
+        margin-bottom: 25px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .card {
+            margin-bottom: 15px;
+        }
+    }
+</style>
 {% endblock %}
 
 {% block web %}
-dashboard
+<div class="row mt-3 text-center" style="row-gap: 20px;">
+
+    <!-- Catalogue Section -->
+    <div class="col-lg-3 section">
+        <div class="card border">
+            <div class="title">
+                <h3>Catalogue</h3>
+            </div>
+            <div class="main">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span><strong>Total Catalogue</strong></span>
+                        <span class="badge">{{ overall_catalogs }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Events Section -->
+    <div class="col-lg-3 section">
+        <div class="card border">
+            <div class="title">
+                <h3>Events</h3>
+            </div>
+            <div class="main">
+                <ul class="list-group list-group-flush">
+                    <!-- Add Event List Items Here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tasks Section -->
+    <div class="col-lg-3 section">
+        <div class="card border">
+            <div class="title">
+                <h3>Tasks</h3>
+            </div>
+            <div class="main">
+                <ul class="list-group list-group-flush">
+                    <!-- Add Task List Items Here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointments Section -->
+    <div class="col-lg-3 section">
+        <div class="card border">
+            <div class="title">
+                <h3>Appointments</h3>
+            </div>
+            <div class="main">
+                <ul class="list-group list-group-flush">
+                    <!-- Add Appointment List Items Here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Community Forums Section -->
+    <div class="col-lg-6 section">
+        <div class="card border">
+            <div class="title">
+                <h3>Community Forums</h3>
+            </div>
+            <div class="main" style="overflow-y: auto; max-height: 300px;">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <a href="https://www.deviantart.com/" target="_blank" class="forum-link">Devine Art</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="https://www.artsper.com/us/" target="_blank" class="forum-link">Artsper</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="https://www.thisiscolossal.com/category/art/" target="_blank" class="forum-link">Colossal</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="https://www.saatchiart.com/en-in/stories" target="_blank" class="forum-link">Saatchiart</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Latest Catalogue Section -->
+    <div class="col-lg-6 section">
+        <div class="card border">
+            <div class="title">
+                <h3>Latest Catalogue</h3>
+            </div>
+            <div class="main" style="overflow-y: auto; max-height: 300px;">
+                <ul class="list-group">
+                    {% for catalog in catalogs %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <img src="{{ catalog.catalogue_image.url }}" class="card-img-top me-2" alt="{{ catalog.title }}" style="height: 50px; width: 50px; border-radius: 10px;">
+                                {{ forloop.counter }}) - 
+                                <a href="{% url 'catalogue_details' catalogue_id=catalog.artist_catalogue_id %}" class="text-light">{{ catalog.title }}</a>
+                            </div>
+                            <span style="font-size: 0.9rem;">{{ catalog.created_at }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
 {% endblock %}

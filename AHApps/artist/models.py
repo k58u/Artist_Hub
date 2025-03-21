@@ -1,15 +1,15 @@
-
 from django.db import models
 from django.core.mail import send_mail
 from django.conf import settings
-
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth.models import User 
+from django.contrib.auth.models import AbstractBaseUser
 from AHApps.master.models import TimestampModel
 from AHApps.master.utils.UNIQUE.generate_password import create_password
 from AHApps.master.utils.UNIQUE.generate_primary_key import create_primary_key
-
 import os
+import uuid
 
-# Create your models here.
 class Artist(TimestampModel):
     artist_id = models.CharField(primary_key=True, max_length=255, blank=True)
     email = models.EmailField(max_length=255, unique=True, null=False, blank=False)
@@ -17,7 +17,6 @@ class Artist(TimestampModel):
     password = models.CharField(max_length=255, blank=True)
     otp = models.CharField(max_length=255, default='545663')
     is_active = models.BooleanField(default=False)
-
 
     def save(self, *args, **kwargs):
         if not self.artist_id:
@@ -50,10 +49,10 @@ class Artist(TimestampModel):
             send_mail(subject, message, from_email, recipient_list)
 
         super(Artist, self).save(*args, **kwargs)
-
-
+        # Create ArtistProfile if not exists
         if not hasattr(self, 'artistprofile'):
             ArtistProfile.objects.get_or_create(artist_id=self)
+
 
 class ArtistProfile(TimestampModel):
     GENDER_CHOICES = (
@@ -65,16 +64,18 @@ class ArtistProfile(TimestampModel):
     profile = models.ImageField(default="default-images/artist-profile.png")
     first_name = models.CharField(max_length=255, default='-', blank=True, null=True)
     last_name = models.CharField(max_length=255, default='-', blank=True, null=True)
-    address = models.CharField(max_length=255,default=" ",blank =True ,null=True)
     gender = models.CharField(max_length=255, default="other", choices=GENDER_CHOICES, blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
+    address=models.CharField(max_length=255, default="-", blank=True, null=True)
     
     def save(self, *args, **kwargs):
+        # Fetch the current object from the database to compare
         try:
             existing_profile = ArtistProfile.objects.get(pk=self.pk)
         except ArtistProfile.DoesNotExist:
             existing_profile = None
 
+        # Only update the image name if a new image is uploaded
         if self.profile and (not existing_profile or existing_profile.profile != self.profile):
             if self.profile.name.startswith('default-images'):
                 new_filename = self.profile.name
@@ -89,10 +90,10 @@ class ArtistProfile(TimestampModel):
 
 class ArtistCatalogueCategory(TimestampModel):
     name = models.CharField(max_length=255, blank=False, null=False)
+    
 
     def __str__(self):
         return self.name
-
 
 class ArtistCatalogue(TimestampModel):
     POST_FIX = 'catalogue'
@@ -119,3 +120,4 @@ class ArtistCatalogue(TimestampModel):
                 new_filename = f"{self.artist_catalogue_id}_image{ext}"
                 self.catalogue_image.name = os.path.join('artist_catalogue_images/', new_filename)
         super(ArtistCatalogue, self).save(*args, **kwargs)
+

@@ -1,0 +1,90 @@
+{% extends 'web/web_base.html' %}
+
+{% block title %}
+News
+{% endblock %}
+
+{% block style %}
+<style>
+    body {
+        background: linear-gradient(to right, #667eea, #764ba2);
+        color: #fff;
+        font-family: 'Arial', sans-serif;
+    }
+    .container {
+        padding-top: 40px;
+    }
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #fff;
+        color: #000;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+    .card-img-top {
+        height: 220px;
+        object-fit: cover;
+    }
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+    }
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+    .card-text {
+        font-size: 1rem;
+        color: #555;
+    }
+    .btn-primary {
+        background: #764ba2;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+    .btn-primary:hover {
+        background: #5a3b86;
+    }
+    .alert {
+        font-size: 1.2rem;
+        font-weight: 600;
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+</style>
+{% endblock %}
+
+{% block web %}
+<div class="container">
+    <h1 class="text-center mb-4">Latest Headlines: Stay Informed</h1>
+    <div class="row">
+        {% for article in articles %}
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm">
+                <img src="{{ article.urlToImage }}" class="card-img-top" alt="{{ article.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ article.title }}</h5>
+                    <p class="card-text">{{ article.description }}</p>
+                    <p class="text-muted">Published At: {{ article.publishedAt }}</p>
+                    <a href="{{ article.url }}" class="btn btn-primary" target="_blank">Read More</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning text-center" role="alert">
+                No articles found.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
